@@ -1,9 +1,7 @@
 package com.example.teamapp.user.services;
 
-import com.example.teamapp.user.domain.UserEntity;
-
-import java.util.List;
+import com.example.teamapp.user.domain.entity.User;
 
 public interface UserService {
-    UserEntity saveUser(UserEntity userEntity);
+    User saveUser(User user);
 }

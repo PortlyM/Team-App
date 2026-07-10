@@ -1,4 +1,4 @@
-package com.example.teamapp.user.domain;
+package com.example.teamapp.user.domain.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
