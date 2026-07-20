@@ -1,4 +1,4 @@
-package com.example.teamapp.config;
+package com.example.teamapp.api.config;
 
 import com.example.teamapp.user.security.JwtAuthenticationFilter;
 import com.example.teamapp.user.services.AuthenticationService;

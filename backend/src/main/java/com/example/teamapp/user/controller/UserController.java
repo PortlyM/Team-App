@@ -5,6 +5,7 @@ import com.example.teamapp.user.domain.dtos.RegisterUserRequest;
 import com.example.teamapp.user.domain.dtos.UserDto;
 import com.example.teamapp.user.domain.entity.User;
 import com.example.teamapp.user.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping(path = "/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterUserRequest registerUserRequest) {
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest) {
         User createdUser = userService.registerUser(registerUserRequest);
         UserDto savedUser = userMapper.toDto(createdUser);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
