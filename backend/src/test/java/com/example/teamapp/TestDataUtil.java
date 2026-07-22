@@ -12,7 +12,6 @@ public class TestDataUtil {
                 .email("jankowalski@gmail.com")
                 .password("jankowalski")
                 .name("Jan Kowalski")
-                .age(21)
                 .build();
     }
 
@@ -21,7 +20,6 @@ public class TestDataUtil {
                 .email("mareknowak@gmail.com")
                 .password("mareknowak")
                 .name("Marek Nowak")
-                .age(40)
                 .build();
     }
 
@@ -30,7 +28,6 @@ public class TestDataUtil {
                 .email("judytanowak@gmail.com")
                 .password("judytanowak")
                 .name("Judyta Nowak")
-                .age(35)
                 .build();
     }
 }
