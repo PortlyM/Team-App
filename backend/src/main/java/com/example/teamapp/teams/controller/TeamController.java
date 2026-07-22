@@ -5,6 +5,9 @@ import com.example.teamapp.teams.domain.dtos.CreateTeamRequest;
 import com.example.teamapp.teams.domain.dtos.TeamDto;
 import com.example.teamapp.teams.domain.entity.Team;
 import com.example.teamapp.teams.services.TeamService;
+import com.example.teamapp.user.domain.UserMapper;
+import com.example.teamapp.user.domain.dtos.UserDto;
+import com.example.teamapp.user.domain.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -22,6 +24,7 @@ public class TeamController {
 
     private final TeamService teamService;
     private final TeamMapper teamMapper;
+    private final UserMapper userMapper;
 
     @PostMapping
     public ResponseEntity<TeamDto> createTeam(@Valid @RequestBody CreateTeamRequest createTeamRequest) {
@@ -43,5 +46,25 @@ public class TeamController {
         Team searchedTeam = teamService.getTeamById(id);
         TeamDto searchedTeamDto = teamMapper.toDto(searchedTeam);
         return new ResponseEntity<>(searchedTeamDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteTeamById(@PathVariable UUID id) {
+        teamService.deleteTeamById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(path = "/{teamid}/members/{memberid}")
+    public ResponseEntity<List<UserDto>> addMember(@PathVariable UUID teamid, @PathVariable UUID memberid) {
+        List<User> updatedMemberList = teamService.addMember(teamid, memberid);
+        List<UserDto> mappedUpdatedMemberList = userMapper.toDtoList(updatedMemberList);
+        return new ResponseEntity<>(mappedUpdatedMemberList, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/{teamid}/members/{memberid}")
+    public ResponseEntity<List<UserDto>> deleteMember(@PathVariable UUID teamid, @PathVariable UUID memberid) {
+        List<User> updatedMemberList = teamService.deleteMember(teamid, memberid);
+        List<UserDto> mappedUpdatedMemberList = userMapper.toDtoList(updatedMemberList);
+        return new ResponseEntity<>(mappedUpdatedMemberList, HttpStatus.OK);
     }
 }
