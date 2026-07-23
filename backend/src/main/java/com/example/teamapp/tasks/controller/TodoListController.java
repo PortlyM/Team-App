@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -33,5 +34,12 @@ public class TodoListController {
     public ResponseEntity<Void> deleteTodoListById(@PathVariable UUID listid) {
         todoListService.deleteTodoListById(listid);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(path = "/team/{teamid}")
+    public ResponseEntity<List<TodoListDto>> getAllLists(@PathVariable UUID teamid) {
+        List<TodoList> todoListsEntities = todoListService.getAllLists(teamid);
+        List<TodoListDto> todoListsDtos = todoListMapper.toDtoList(todoListsEntities);
+        return new ResponseEntity<>(todoListsDtos, HttpStatus.OK);
     }
 }

@@ -11,10 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/tasks")
+@RequestMapping(path = "/api/v1/todolists/tasks")
 @RequiredArgsConstructor
 public class TaskController {
 
@@ -37,5 +38,17 @@ public class TaskController {
         return new ResponseEntity<>(mappedUpdatedTask, HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "/{taskid}")
+    public ResponseEntity<Void> deleteTask(@PathVariable UUID taskid) {
+        taskService.deleteTask(taskid);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(path = "/{taskid}")
+    public ResponseEntity<TaskDto> getTask(@PathVariable UUID taskid) {
+        Task task = taskService.getTask(taskid);
+        TaskDto mappedTask = taskMapper.toDto(task);
+        return new ResponseEntity<>(mappedTask, HttpStatus.OK);
+    }
 
 }

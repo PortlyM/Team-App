@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,5 +37,10 @@ public class TodoListServiceImpl implements TodoListService {
     @Override
     public void deleteTodoListById(UUID listId) {
         todoListRepository.deleteById(listId);
+    }
+
+    @Override
+    public List<TodoList> getAllLists(UUID teamId) {
+        return todoListRepository.findAllByTeam_Id(teamId);
     }
 }
