@@ -29,5 +29,9 @@ public class TodoListController {
         return new ResponseEntity<>(mappedCreatedTodoList, HttpStatus.CREATED);
     }
 
-
+    @DeleteMapping(path = "/{listid}")
+    public ResponseEntity<Void> deleteTodoListById(@PathVariable UUID listid) {
+        todoListService.deleteTodoListById(listid);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.teamapp.tasks.services.impl;
 
-import com.example.teamapp.tasks.domain.TodoListMapper;
 import com.example.teamapp.tasks.domain.enitities.TodoList;
 import com.example.teamapp.tasks.repository.TodoListRepository;
 import com.example.teamapp.tasks.services.TodoListService;
@@ -32,5 +31,10 @@ public class TodoListServiceImpl implements TodoListService {
             return todoListRepository.save(todoList);
         }
         throw new EntityExistsException("Todo list with name " + todoList.getName() + "already exists");
+    }
+
+    @Override
+    public void deleteTodoListById(UUID listId) {
+        todoListRepository.deleteById(listId);
     }
 }
