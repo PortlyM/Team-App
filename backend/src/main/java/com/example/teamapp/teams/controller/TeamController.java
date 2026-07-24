@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,8 +63,8 @@ public class TeamController {
     }
 
     @DeleteMapping(path = "/{teamid}/members/{memberid}")
-    public ResponseEntity<List<UserDto>> deleteMember(@PathVariable UUID teamid, @PathVariable UUID memberid) {
-        List<User> updatedMemberList = teamService.deleteMember(teamid, memberid);
+    public ResponseEntity<List<UserDto>> deleteMember(@PathVariable UUID teamid, @PathVariable UUID memberid, Principal principal) {
+        List<User> updatedMemberList = teamService.deleteMember(teamid, memberid, principal.getName());
         List<UserDto> mappedUpdatedMemberList = userMapper.toDtoList(updatedMemberList);
         return new ResponseEntity<>(mappedUpdatedMemberList, HttpStatus.OK);
     }

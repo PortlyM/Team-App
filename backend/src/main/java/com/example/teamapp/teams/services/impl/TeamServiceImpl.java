@@ -8,6 +8,7 @@ import com.example.teamapp.user.repository.UserRepository;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,13 +61,18 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public List<User> deleteMember(UUID teamId, UUID memberId) {
+    public List<User> deleteMember(UUID teamId, UUID memberId, String name) {
+        User user = userRepository.findByEmail(name)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + name + " not found"));
         Team actualTeam = teamRepository.findById(teamId)
                 .orElseThrow(() -> new EntityNotFoundException("Team with id " + teamId + "does not exist"));
-        List<User> listOfMembers = actualTeam.getMembers();
-        User deletedUser = userRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("User with id " + memberId + "does not exist"));
-        listOfMembers.remove(deletedUser);
-        return listOfMembers;
+        if (user.getId().equals(actualTeam.getLeader().getId())) {
+            List<User> listOfMembers = actualTeam.getMembers();
+            User deletedUser = userRepository.findById(memberId)
+                    .orElseThrow(() -> new EntityNotFoundException("User with id " + memberId + "does not exist"));
+            listOfMembers.remove(deletedUser);
+            return listOfMembers;
+        }
+        throw new AccessDeniedException("You are not a leader of team " + actualTeam.getName());
     }
 }

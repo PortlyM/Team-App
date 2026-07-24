@@ -13,5 +13,5 @@ public interface TeamService {
     void deleteTeamById(UUID teamId);
 
     List<User> addMember(UUID teamId, UUID memberId);
-    List<User> deleteMember(UUID teamId, UUID memberId);
+    List<User> deleteMember(UUID teamId, UUID memberId, String name);
 }
