@@ -1,6 +1,7 @@
 package com.example.teamapp.api.controller;
 
 import com.example.teamapp.api.domain.dtos.ApiErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.SignatureException;
 
 @RestController
 @ControllerAdvice
@@ -51,5 +54,32 @@ public class ErrorController {
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(apiErrorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException ex) {
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiErrorResponse> handleSignatureException(SignatureException ex) {
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiErrorResponse> handleRuntimeException(RuntimeException ex) {
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(ex.getMessage())
+                .build();
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
