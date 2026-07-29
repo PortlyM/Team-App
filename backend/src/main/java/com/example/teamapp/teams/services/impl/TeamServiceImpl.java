@@ -39,7 +39,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team getTeamById(UUID teamId) {
         return teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("Entity not found " + teamId));
+                .orElseThrow(() -> new EntityNotFoundException("Team not found " + teamId));
     }
 
     @Override
