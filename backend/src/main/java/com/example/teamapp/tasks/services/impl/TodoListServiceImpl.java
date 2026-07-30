@@ -31,7 +31,7 @@ public class TodoListServiceImpl implements TodoListService {
         if (!todoListRepository.existsByName(todoList.getName())) {
             return todoListRepository.save(todoList);
         }
-        throw new EntityExistsException("Todo list with name " + todoList.getName() + "already exists");
+        throw new EntityExistsException("Todo list with name " + todoList.getName() + " already exists");
     }
 
     @Override
