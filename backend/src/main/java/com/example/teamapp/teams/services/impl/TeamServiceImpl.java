@@ -51,25 +51,25 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public List<User> addMember(UUID teamId, UUID memberId) {
         Team actualTeam = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("Team with id " + teamId + "does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Team with id " + teamId + " does not exist"));
         List<User> listOfMembers = actualTeam.getMembers();
         User addedUser = userRepository.findById(memberId)
-                        .orElseThrow(() -> new EntityNotFoundException("User with id " + memberId + "does not exist"));
+                        .orElseThrow(() -> new EntityNotFoundException("User with id " + memberId + " does not exist"));
         listOfMembers.add(addedUser);
         return listOfMembers;
     }
 
     @Override
     @Transactional
-    public List<User> deleteMember(UUID teamId, UUID memberId, String name) {
-        User user = userRepository.findByEmail(name)
-                .orElseThrow(() -> new EntityNotFoundException("User with email " + name + " not found"));
+    public List<User> deleteMember(UUID teamId, UUID memberId, String loggedUserEmail) {
+        User user = userRepository.findByEmail(loggedUserEmail)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + loggedUserEmail + " not found"));
         Team actualTeam = teamRepository.findById(teamId)
-                .orElseThrow(() -> new EntityNotFoundException("Team with id " + teamId + "does not exist"));
+                .orElseThrow(() -> new EntityNotFoundException("Team with id " + teamId + " does not exist"));
         if (user.getId().equals(actualTeam.getLeader().getId())) {
             List<User> listOfMembers = actualTeam.getMembers();
             User deletedUser = userRepository.findById(memberId)
-                    .orElseThrow(() -> new EntityNotFoundException("User with id " + memberId + "does not exist"));
+                    .orElseThrow(() -> new EntityNotFoundException("User with id " + memberId + " does not exist"));
             listOfMembers.remove(deletedUser);
             return listOfMembers;
         }
