@@ -48,7 +48,7 @@ class TodoListServiceImplTest {
         assertEquals(todoList, result);
 
         verify(teamRepository, times(1)).findById(testTeam.getId());
-        verify(todoListRepository, times(1)).existsById(todoList.getId());
+        verify(todoListRepository, times(1)).existsByName(todoList.getName());
         verify(todoListRepository, times(1)).save(todoList);
     }
 

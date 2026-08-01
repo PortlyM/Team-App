@@ -4,6 +4,7 @@ import com.example.teamapp.tasks.domain.TaskStatus;
 import com.example.teamapp.tasks.domain.enitities.Task;
 import com.example.teamapp.tasks.domain.enitities.TodoList;
 import com.example.teamapp.teams.domain.entity.Team;
+import com.example.teamapp.user.domain.dtos.RegisterUserRequest;
 import com.example.teamapp.user.domain.entity.User;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,18 @@ public class TestDataUtil {
                 .createdAt(LocalDateTime.now())
                 .teamOwner(new ArrayList<>())
                 .teamMember(new ArrayList<>())
+                .build();
+    }
+
+    public static RegisterUserRequest createTestRegisterRequest() {
+        return createTestRegisterRequest("testUser", "test@example.com");
+    }
+
+    public static RegisterUserRequest createTestRegisterRequest(String name, String email) {
+        return RegisterUserRequest.builder()
+                .name(name)
+                .email(email)
+                .password("testPassword")
                 .build();
     }
 
