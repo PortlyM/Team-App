@@ -1,7 +1,7 @@
 package com.example.teamapp.teams.domain.dtos;
 
-import com.example.teamapp.tasks.domain.enitities.TodoList;
-import com.example.teamapp.user.domain.entity.User;
+import com.example.teamapp.tasks.domain.dtos.TodoListDto;
+import com.example.teamapp.user.domain.dtos.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class TeamDto {
 
     private UUID id;
     private String name;
-    private User leader;
-    private List<TodoList> todoLists = new ArrayList<>();
-    private List<User> members = new ArrayList<>();
+    private UserDto leader;
+    private List<TodoListDto> todoLists = new ArrayList<>();
+    private List<UserDto> members = new ArrayList<>();
 }
