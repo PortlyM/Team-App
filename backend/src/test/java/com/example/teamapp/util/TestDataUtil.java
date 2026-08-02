@@ -16,13 +16,24 @@ public class TestDataUtil {
 
     // --- USER ---
 
+    //User with ID
     public static User createTestUser() {
         return createTestUser("test@example.com", "Test User");
     }
 
     public static User createTestUser(String email, String name) {
+        User userWithId = createTestControllerUser(email, name);
+        userWithId.setId(UUID.randomUUID());
+        return userWithId;
+    }
+
+    //User without ID
+    public static User createTestControllerUser() {
+        return createTestControllerUser("test@example.com", "Test User");
+    }
+
+    public static User createTestControllerUser(String email, String name) {
         return User.builder()
-                .id(UUID.randomUUID())
                 .email(email)
                 .password("encodedPassword123")
                 .name(name)
@@ -46,13 +57,24 @@ public class TestDataUtil {
 
     // --- TEAM ---
 
+    //Team with ID
     public static Team createTestTeam(User leader) {
         return createTestTeam("Test Team", leader);
     }
 
     public static Team createTestTeam(String name, User leader) {
+        Team teamWithId = createTestControllerTeam(name, leader);
+        teamWithId.setId(UUID.randomUUID());
+        return teamWithId;
+    }
+
+    //Team without ID
+    public static Team createTestControllerTeam(User leader) {
+        return createTestControllerTeam("Test Team", leader);
+    }
+
+    public static Team createTestControllerTeam(String name, User leader) {
         Team team = Team.builder()
-                .id(UUID.randomUUID())
                 .name(name)
                 .leader(leader)
                 .todoLists(new ArrayList<>())
@@ -69,13 +91,24 @@ public class TestDataUtil {
 
     // --- TODOLIST ---
 
+    //TodoList with ID
     public static TodoList createTestTodoList(Team team) {
         return createTestTodoList("Test TodoList", team);
     }
 
     public static TodoList createTestTodoList(String name, Team team) {
+        TodoList todoListWithID = createTestTodoList(name, team);
+        todoListWithID.setId(UUID.randomUUID());
+        return todoListWithID;
+    }
+
+    //TodoList without ID
+    public static TodoList createTestControllerTodoList(Team team) {
+        return createTestControllerTodoList("Test TodoList", team);
+    }
+
+    public static TodoList createTestControllerTodoList(String name, Team team) {
         TodoList todoList = TodoList.builder()
-                .id(UUID.randomUUID())
                 .name(name)
                 .team(team)
                 .tasks(new ArrayList<>())
@@ -90,13 +123,24 @@ public class TestDataUtil {
 
     // --- TASK ---
 
+    //Task with ID
     public static Task createTestTask(TodoList list) {
         return createTestTask("Do something awesome", TaskStatus.NOT_STARTED, list);
-    }
+    };
 
     public static Task createTestTask(String content, TaskStatus status, TodoList list) {
+        Task taskWithID = createTestControllerTask(content, status, list);
+        taskWithID.setId(UUID.randomUUID());
+        return taskWithID;
+    }
+
+    //Task without ID
+    public static Task createTestControllerTask(TodoList list) {
+        return createTestControllerTask("Do something awesome", TaskStatus.NOT_STARTED, list);
+    }
+
+    public static Task createTestControllerTask(String content, TaskStatus status, TodoList list) {
         Task task = Task.builder()
-                .id(UUID.randomUUID())
                 .content(content)
                 .status(status)
                 .list(list)
