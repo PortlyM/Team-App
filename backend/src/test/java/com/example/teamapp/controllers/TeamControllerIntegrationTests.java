@@ -111,4 +111,38 @@ public class TeamControllerIntegrationTests {
         boolean teamExistsAfterDelete = teamRepository.existsById(testTeam.getId());
         assertFalse(teamExistsAfterDelete, "Team has not been deleted");
     }
+
+    @Test
+    @WithMockUser
+    void addMember_ShouldReturnListWithAddedMember() throws Exception {
+        User testUser = createTestControllerUser();
+        User testUser2 = createTestControllerUser();
+        userRepository.save(testUser);
+        userRepository.save(testUser2);
+        Team testTeam = createTestControllerTeam(testUser);
+        teamRepository.save(testTeam);
+
+        mockMvc.perform(post("/api/v1/teams/{teamid}/members/{memberid}", testTeam.getId(), testUser2.getId())
+        )
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) jsonPath("$", hasSize(2)))
+                .andExpect((ResultMatcher) jsonPath("$[1].name", is(testUser2.getName())));
+    }
+
+    @Test
+    @WithMockUser(username = "test@example.com")
+    void deleteMember_ShouldReturnListWithoutDeletedMember() throws Exception {
+        User testUser = createTestControllerUser();
+        User testUser2 = createTestControllerUser("test2@example.com", "testUser2");
+        userRepository.save(testUser);
+        userRepository.save(testUser2);
+        Team testTeam = createTestControllerTeam(testUser);
+        teamRepository.save(testTeam);
+        testTeam.getMembers().add(testUser2);
+
+        mockMvc.perform(delete("/api/v1/teams/{teamid}/members/{memberid}", testTeam.getId(), testUser2.getId())
+        )
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) jsonPath("$", hasSize(1)));
+    }
 }

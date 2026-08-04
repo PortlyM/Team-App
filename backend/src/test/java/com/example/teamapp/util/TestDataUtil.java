@@ -1,6 +1,7 @@
 package com.example.teamapp.util;
 
 import com.example.teamapp.tasks.domain.TaskStatus;
+import com.example.teamapp.tasks.domain.dtos.CreateTodoListRequest;
 import com.example.teamapp.tasks.domain.enitities.Task;
 import com.example.teamapp.tasks.domain.enitities.TodoList;
 import com.example.teamapp.teams.domain.entity.Team;
@@ -43,6 +44,7 @@ public class TestDataUtil {
                 .build();
     }
 
+    //Register User Request
     public static RegisterUserRequest createTestRegisterRequest() {
         return createTestRegisterRequest("testUser", "test@example.com");
     }
@@ -97,7 +99,7 @@ public class TestDataUtil {
     }
 
     public static TodoList createTestTodoList(String name, Team team) {
-        TodoList todoListWithID = createTestTodoList(name, team);
+        TodoList todoListWithID = createTestControllerTodoList(name, team);
         todoListWithID.setId(UUID.randomUUID());
         return todoListWithID;
     }
@@ -119,6 +121,17 @@ public class TestDataUtil {
         }
 
         return todoList;
+    }
+
+    //Create todo list request
+    public static CreateTodoListRequest createRequestTodoList() {
+        return createRequestTodoList("TestTodoList");
+    }
+
+    public static CreateTodoListRequest createRequestTodoList(String name) {
+        return CreateTodoListRequest.builder()
+                .name(name)
+                .build();
     }
 
     // --- TASK ---

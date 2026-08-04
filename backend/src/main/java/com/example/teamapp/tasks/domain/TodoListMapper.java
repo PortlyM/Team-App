@@ -4,6 +4,7 @@ import com.example.teamapp.tasks.domain.dtos.CreateTodoListRequest;
 import com.example.teamapp.tasks.domain.dtos.TodoListDto;
 import com.example.teamapp.tasks.domain.enitities.TodoList;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 public interface TodoListMapper {
 
     TodoList toEntity(CreateTodoListRequest createTodoListRequest);
+
+    @Mapping(source = "team.id", target = "teamId")
     TodoListDto toDto(TodoList todoList);
     List<TodoListDto> toDtoList(List<TodoList> entityList);
 }
