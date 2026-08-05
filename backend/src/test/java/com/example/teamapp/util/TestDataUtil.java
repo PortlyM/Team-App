@@ -1,6 +1,7 @@
 package com.example.teamapp.util;
 
 import com.example.teamapp.tasks.domain.TaskStatus;
+import com.example.teamapp.tasks.domain.dtos.CreateTaskRequest;
 import com.example.teamapp.tasks.domain.dtos.CreateTodoListRequest;
 import com.example.teamapp.tasks.domain.enitities.Task;
 import com.example.teamapp.tasks.domain.enitities.TodoList;
@@ -164,5 +165,18 @@ public class TestDataUtil {
         }
 
         return task;
+    }
+
+    //Create task request
+    public static CreateTaskRequest createTestTaskRequest(UUID listId) {
+        return createTestTaskRequest("Test task content", TaskStatus.NOT_STARTED, listId);
+    }
+
+    public static CreateTaskRequest createTestTaskRequest(String content, TaskStatus status, UUID listId) {
+        return CreateTaskRequest.builder()
+                .content(content)
+                .status(status)
+                .todoListId(listId)
+                .build();
     }
 }
