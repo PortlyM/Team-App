@@ -46,9 +46,9 @@ public class UserControllerIntegrationTest {
                         .content(objectMapper.writeValueAsString(registerUserRequest))
         )
                 .andExpect(status().isCreated())
-                .andExpect((ResultMatcher) jsonPath("$.id").exists())
-                .andExpect((ResultMatcher) jsonPath("$.name", is(registerUserRequest.getName())))
-                .andExpect((ResultMatcher) jsonPath("$.email", is(registerUserRequest.getEmail())));
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name", is(registerUserRequest.getName())))
+                .andExpect(jsonPath("$.email", is(registerUserRequest.getEmail())));
     }
 
     @Test
@@ -63,9 +63,9 @@ public class UserControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$", hasSize(2)))
-                .andExpect((ResultMatcher) jsonPath("$[0].email", is(testUser1.getEmail())))
-                .andExpect((ResultMatcher) jsonPath("$[1].email", is(testUser2.getEmail())));
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].email", is(testUser1.getEmail())))
+                .andExpect(jsonPath("$[1].email", is(testUser2.getEmail())));
     }
 
     @Test
@@ -78,8 +78,8 @@ public class UserControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$.email", is(testUser.getEmail())))
-                .andExpect((ResultMatcher) jsonPath("$.name", is(testUser.getName())));
+                .andExpect(jsonPath("$.email", is(testUser.getEmail())))
+                .andExpect(jsonPath("$.name", is(testUser.getName())));
     }
 
     @Test

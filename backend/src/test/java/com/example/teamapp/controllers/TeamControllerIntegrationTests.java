@@ -90,8 +90,8 @@ public class TeamControllerIntegrationTests {
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$.name", is(testTeam.getName())))
-                .andExpect((ResultMatcher) jsonPath("$.leader.name", is(testUser.getName())));
+                .andExpect(jsonPath("$.name", is(testTeam.getName())))
+                .andExpect(jsonPath("$.leader.name", is(testUser.getName())));
     }
 
     @Test
@@ -125,8 +125,8 @@ public class TeamControllerIntegrationTests {
         mockMvc.perform(post("/api/v1/teams/{teamid}/members/{memberid}", testTeam.getId(), testUser2.getId())
         )
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$", hasSize(2)))
-                .andExpect((ResultMatcher) jsonPath("$[1].name", is(testUser2.getName())));
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[1].name", is(testUser2.getName())));
     }
 
     @Test
@@ -143,6 +143,6 @@ public class TeamControllerIntegrationTests {
         mockMvc.perform(delete("/api/v1/teams/{teamid}/members/{memberid}", testTeam.getId(), testUser2.getId())
         )
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$", hasSize(1)));
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 }
