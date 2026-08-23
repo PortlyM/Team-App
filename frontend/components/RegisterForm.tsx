@@ -2,59 +2,72 @@
 
 import FormField from "@/components/FormField";
 import SubmitButton from "@/components/SubmitButton";
-import {useState} from "react";
+import { useState, useTransition } from "react";
+import { registerAction } from "@/lib/auth";
 
 export default function RegisterForm() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Data from form: ", name, email, password, repeatPassword);
+        setError(null);
+        
+        const formData = new FormData(e.currentTarget);
+        const password = formData.get("password") as string;
+        const repeatPassword = formData.get("repeatPassword") as string;
+
+        if (password !== repeatPassword) {
+            setError("Passwords do not match");
+            return;
+        }
+
+        startTransition(async () => {
+            const result = await registerAction(formData);
+            if (result?.error) {
+                setError(result.error);
+            }
+        });
     };
 
     return (
-        <div>
+        <div className="w-full mt-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Name field */}
+                {error && (
+                    <div className="p-3 bg-red-100 text-red-600 rounded-lg text-sm text-center">
+                        {error}
+                    </div>
+                )}
+                
                 <FormField
                     upperText="User name"
-                    type="name"
-                    value={name}
+                    type="text"
+                    name="name"
                     placeholder="Username"
-                    onChange={(e) => setName(e.target.value)}
                 />
 
-                {/* Email field */}
                 <FormField
                     upperText="Email Address"
                     type="email"
-                    value={email}
+                    name="email"
                     placeholder="you@email.com"
-                    onChange={(e) => setEmail(e.target.value)}
                 />
 
-                {/* Password field */}
                 <FormField
                     upperText="Password"
                     type="password"
-                    value={password}
+                    name="password"
                     placeholder="*******"
-                    onChange={(e) => setPassword(e.target.value)}
                 />
 
-                {/* Repeat password field */}
                 <FormField
-                    upperText="Password"
+                    upperText="Repeat Password"
                     type="password"
-                    value={repeatPassword}
+                    name="repeatPassword"
                     placeholder="*******"
-                    onChange={(e) => setRepeatPassword(e.target.value)}
                 />
 
-                <SubmitButton text="Sign up" />
+                <SubmitButton text={isPending ? "Signing up..." : "Sign up"} />
             </form>
         </div>
     )

@@ -1,43 +1,52 @@
 "use client";
 
-import { useState } from "react";
-
+import { useState, useTransition } from "react";
 import FormField from "@/components/FormField";
 import SubmitButton from "@/components/SubmitButton";
+import { loginAction } from "@/lib/auth";
 
 export default function LoginForm() {
+    const [error, setError] = useState<string | null>(null);
+    const [isPending, startTransition] = useTransition();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        console.log("Data from form: ", email, password);
+        setError(null);
+        
+        const formData = new FormData(e.currentTarget);
+        
+        startTransition(async () => {
+            const result = await loginAction(formData);
+            if (result?.error) {
+                setError(result.error);
+            }
+        });
     };
 
     return (
-        <div>
+        <div className="w-full mt-8">
             <form onSubmit={handleSubmit} className="space-y-5">
-                {/* Email field */}
+                {error && (
+                    <div className="p-3 bg-red-100 text-red-600 rounded-lg text-sm text-center">
+                        {error}
+                    </div>
+                )}
+                
                 <FormField
                     upperText="Email Address"
                     type="email"
-                    value={email}
+                    name="email"
                     placeholder="you@email.com"
-                    onChange={(e) => setEmail(e.target.value)}
                 />
 
-                {/* Password field */}
                 <FormField
                     upperText="Password"
                     type="password"
-                    value={password}
+                    name="password"
                     placeholder="*******"
-                    onChange={(e) => setPassword(e.target.value)}
                 />
 
-                <SubmitButton text="Log in" />
+                <SubmitButton text={isPending ? "Logging in..." : "Log in"} />
             </form>
         </div>
     )

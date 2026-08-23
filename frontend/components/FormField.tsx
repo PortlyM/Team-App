@@ -1,12 +1,13 @@
 type FormFieldProps = {
     upperText: string;
     type: string;
-    value: string;
+    value?: string;
     placeholder: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    name?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function FormField({upperText, type, value, placeholder, onChange}: FormFieldProps) {
+export default function FormField({upperText, type, value, placeholder, name, onChange}: FormFieldProps) {
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -16,6 +17,7 @@ export default function FormField({upperText, type, value, placeholder, onChange
         type={type}
         required
         value={value}
+        name={name}
         onChange={onChange}
         placeholder={placeholder}
         className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-gray-50
