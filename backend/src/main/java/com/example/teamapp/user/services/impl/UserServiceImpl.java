@@ -46,6 +46,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " does not exist"));
+    }
+
+    @Override
     public void deleteUser(UUID userId) {
         userRepository.deleteById(userId);
     }

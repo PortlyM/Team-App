@@ -10,5 +10,6 @@ public interface UserService {
     User registerUser(RegisterUserRequest registerUserRequest);
     List<User> getAllUsers();
     User getUser(UUID userId);
+    User getUserByEmail(String email);
     void deleteUser(UUID userId);
 }
